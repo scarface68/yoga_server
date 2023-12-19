@@ -8,7 +8,6 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true,
         validate: {
             validator: function(value) {
                 // Email validation regex
@@ -21,14 +20,6 @@ const userSchema = new mongoose.Schema({
     dateOfBirth: {
         type: Date,
         required: true,
-        validate: {
-            validator: function(value) {
-                // Calculate age based on date of birth
-                const age = Math.floor((new Date() - new Date(value)) / (365.25 * 24 * 60 * 60 * 1000));
-                return age >= 18 && age <= 65;
-            },
-            message: 'Age should be between 18 and 65'
-        }
     },
     batch: {
         type: String,

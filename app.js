@@ -30,10 +30,34 @@ app.get("/user/:userId", (req, res) => {
   }
 });
 
+app.get("/users", async (req, res) => {
+  const users = await User.find().exec();
+
+  if (users.length > 0) {
+    res.status(200).json(users);
+  } else {
+    res.status(404).json({ message: "Users not found" });
+  }
+});
+
 app.post("/enroll", (req, res) => {
   console.log(req.body);
-
-  res.status(200).json({ message: "User enrolled successfully" });
+  const user = new User({
+    name: req.body.name,
+    email: req.body.email,
+    dateOfBirth: req.body.dob,
+    batch: req.body.selectedBatch,
+  });
+  user
+    .save()
+    .then(() => {
+      console.log("User enrolled successfully");
+      res.status(200).json({ message: "User enrolled successfully" });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: err.message });
+    });
 });
 
 const PORT = process.env.PORT || 5000;

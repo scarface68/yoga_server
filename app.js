@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const User = require("./models/User");
 const cors = require("cors");
-require('dotenv').config();
+require("dotenv").config();
 
 const app = express();
 
@@ -13,7 +13,8 @@ app.use(
   })
 );
 
-const monogoDB_url = process.env.MONGODB_URL || "mongodb://localhost:27017/yoga";
+const monogoDB_url =
+  process.env.MONGODB_URL || "mongodb://localhost:27017/yoga";
 mongoose
   .connect(monogoDB_url)
   .then(() => console.log("Connected to MongoDB"))
@@ -42,6 +43,10 @@ app.get("/users", async (req, res) => {
   }
 });
 
+const CompletePayment = () => {
+  return "Payment Successful";
+};
+
 app.post("/enroll", (req, res) => {
   console.log(req.body);
   const user = new User({
@@ -60,6 +65,11 @@ app.post("/enroll", (req, res) => {
       console.log(err);
       res.status(500).json({ message: err.message });
     });
+});
+
+app.post("/payment", (req, res) => {
+  CompletePayment();
+  res.status(200).json({ message: "Payment successful" });
 });
 
 const PORT = process.env.PORT || 5000;
